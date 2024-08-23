@@ -445,6 +445,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function generateTeams(players, numTeams, mustTogetherPairs = [], cannotTogetherPairs = []) {
+        console.log(mustTogetherPairs)
+        console.log(mustTogetherPairs)
         let attempts = 0;
         let threshold = 0.5;
         const maxAttempts = 10000;
