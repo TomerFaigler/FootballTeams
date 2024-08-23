@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="#" id="nav-players">שחקנים</a></li>
+            <li><a href="#" id="nav-must-together">חייבים להיות ביחד</a></li>
+            <li><a href="#" id="nav-cannot-together">לא יכולים להיות ביחד</a></li>
+            <li><a href="#" id="nav-teams">קבוצות</a></li>
+        </ul>
+    </nav>
+
+    <!-- Players Section -->
+    <section id="players-section" class="content-section">
+        <h2>שחקנים</h2>
+        <ul id="players-list">
+            <!-- Players will be listed here -->
+        </ul>
+    </section>
+
+    <!-- Must Be Together Section -->
+    <section id="must-together-section" class="content-section">
+        <h2>חייבים להיות ביחד</h2>
+        <ul id="must-together-list">
+            <!-- Pairs will be listed here -->
+        </ul>
+        <button id="add-pair-btn">הוסף זוג</button>
+    </section>
+
+    <!-- Cannot Be Together Section -->
+    <section id="cannot-together-section" class="content-section">
+        <h2>לא יכולים להיות ביחד</h2>
+        <ul id="cannot-together-list">
+            <!-- Pairs will be listed here -->
+        </ul>
+        <button id="add-pair-cannot-btn">הוסף זוג</button>
+    </section>
+
+    <!-- Teams Section -->
+    <section id="teams-section" class="content-section">
+        <h2>קבוצות</h2>
+        <label for="num-teams">מספר קבוצות:</label>
+        <input type="number" id="num-teams" min="2" max="10">
+        
+        <label for="players-subset">בחר שחקנים:</label>
+        <ul id="players-subset-list">
+            <!-- Checkboxes for players will be listed here -->
+        </ul>
+
+        <button id="generate-teams-btn">צור קבוצות</button>
+        <button id="regenerate-teams-btn">צור קבוצות מחדש</button>
+        
+        <div id="teams-result">
+            <!-- Generated teams will be displayed here -->
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
