@@ -326,84 +326,85 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Display Must Together Pairs
-    function displayMustTogetherPairs() {
-        const mustTogetherList = document.getElementById("must-together-list");
-        mustTogetherList.innerHTML = "";
-        mustTogetherPairs.forEach((pair, index) => {
-            const li = document.createElement("li");
-            li.textContent = `${pair.player1} & ${pair.player2}`;
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => {
-                mustTogetherPairs.splice(index, 1);
-                localStorage.setItem('mustTogetherPairs', JSON.stringify(mustTogetherPairs));
-                displayMustTogetherPairs();
-            });
-            li.appendChild(deleteBtn);
-            mustTogetherList.appendChild(li);
+function displayMustTogetherPairs() {
+    const mustTogetherList = document.getElementById("must-together-list");
+    mustTogetherList.innerHTML = "";
+    mustTogetherPairs.forEach((pair, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${pair.player1.name} & ${pair.player2.name}`;
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+            mustTogetherPairs.splice(index, 1);
+            localStorage.setItem('mustTogetherPairs', JSON.stringify(mustTogetherPairs));
+            displayMustTogetherPairs();
         });
-    }
+        li.appendChild(deleteBtn);
+        mustTogetherList.appendChild(li);
+    });
+}
 
-    displayMustTogetherPairs();
+displayMustTogetherPairs();
 
-    // Add Must Together Pair
-    document.getElementById("add-pair-btn").addEventListener("click", function() {
-        const player1 = prompt("Enter the name of the first player:");
-        const player2 = prompt("Enter the name of the second player:");
+// Add Must Together Pair
+document.getElementById("add-pair-btn").addEventListener("click", function() {
+    const player1Name = prompt("Enter the name of the first player:");
+    const player2Name = prompt("Enter the name of the second player:");
+
+    if (player1Name && player2Name) {
+        const player1 = players.find(player => player.name === player1Name);
+        const player2 = players.find(player => player.name === player2Name);
 
         if (player1 && player2) {
-            const playerExists1 = players.some(player => player.name === player1);
-            const playerExists2 = players.some(player => player.name === player2);
-
-            if (playerExists1 && playerExists2) {
-                mustTogetherPairs.push({ player1, player2 });
-                localStorage.setItem('mustTogetherPairs', JSON.stringify(mustTogetherPairs));
-                displayMustTogetherPairs();
-            } else {
-                alert("One or both player names do not exist. Please enter valid player names.");
-            }
+            mustTogetherPairs.push({ player1, player2 });
+            localStorage.setItem('mustTogetherPairs', JSON.stringify(mustTogetherPairs));
+            displayMustTogetherPairs();
+        } else {
+            alert("One or both player names do not exist. Please enter valid player names.");
         }
-    });
-
-    // Display Cannot Together Pairs
-    function displayCannotTogetherPairs() {
-        const cannotTogetherList = document.getElementById("cannot-together-list");
-        cannotTogetherList.innerHTML = "";
-        cannotTogetherPairs.forEach((pair, index) => {
-            const li = document.createElement("li");
-            li.textContent = `${pair.player1} & ${pair.player2}`;
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => {
-                cannotTogetherPairs.splice(index, 1);
-                localStorage.setItem('cannotTogetherPairs', JSON.stringify(cannotTogetherPairs));
-                displayCannotTogetherPairs();
-            });
-            li.appendChild(deleteBtn);
-            cannotTogetherList.appendChild(li);
-        });
     }
+});
 
-    displayCannotTogetherPairs();
+// Display Cannot Together Pairs
+function displayCannotTogetherPairs() {
+    const cannotTogetherList = document.getElementById("cannot-together-list");
+    cannotTogetherList.innerHTML = "";
+    cannotTogetherPairs.forEach((pair, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${pair.player1.name} & ${pair.player2.name}`;
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+            cannotTogetherPairs.splice(index, 1);
+            localStorage.setItem('cannotTogetherPairs', JSON.stringify(cannotTogetherPairs));
+            displayCannotTogetherPairs();
+        });
+        li.appendChild(deleteBtn);
+        cannotTogetherList.appendChild(li);
+    });
+}
 
-    // Add Cannot Together Pair
-    document.getElementById("add-pair-cannot-btn").addEventListener("click", function() {
-        const player1 = prompt("Enter the name of the first player:");
-        const player2 = prompt("Enter the name of the second player:");
+displayCannotTogetherPairs();
+
+// Add Cannot Together Pair
+document.getElementById("add-pair-cannot-btn").addEventListener("click", function() {
+    const player1Name = prompt("Enter the name of the first player:");
+    const player2Name = prompt("Enter the name of the second player:");
+
+    if (player1Name && player2Name) {
+        const player1 = players.find(player => player.name === player1Name);
+        const player2 = players.find(player => player.name === player2Name);
 
         if (player1 && player2) {
-            const playerExists1 = players.some(player => player.name === player1);
-            const playerExists2 = players.some(player => player.name === player2);
-
-            if (playerExists1 && playerExists2) {
-                cannotTogetherPairs.push({ player1, player2 });
-                localStorage.setItem('cannotTogetherPairs', JSON.stringify(cannotTogetherPairs));
-                displayCannotTogetherPairs();
-            } else {
-                alert("One or both player names do not exist. Please enter valid player names.");
-            }
+            cannotTogetherPairs.push({ player1, player2 });
+            localStorage.setItem('cannotTogetherPairs', JSON.stringify(cannotTogetherPairs));
+            displayCannotTogetherPairs();
+        } else {
+            alert("One or both player names do not exist. Please enter valid player names.");
         }
-    });
+    }
+});
+
 
     // Populate Players Subset for Team Selection
     function populatePlayersSubset() {
