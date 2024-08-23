@@ -172,48 +172,72 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Generate Teams Logic
     function generateTeams(selectedPlayers, numTeams) {
-        const teams = Array.from({ length: numTeams }, () => []);
-        const mustTogetherHandled = [];
-
-        // Handle must-together pairs first
-        mustTogetherPairs.forEach(pair => {
-            if (!mustTogetherHandled.includes(pair.player1) && !mustTogetherHandled.includes(pair.player2)) {
-                const teamIndex = getSmallestTeamIndex(teams);
-                const player1 = selectedPlayers.find(player => player.name === pair.player1);
-                const player2 = selectedPlayers.find(player => player.name === pair.player2);
-                if (player1 && player2) {
-                    teams[teamIndex].push(player1, player2);
-                    mustTogetherHandled.push(pair.player1, pair.player2);
+        let teams = [];
+        let attempts = 0;
+        let threshold = 0.5;
+        
+        while (attempts < 1000) {
+            // Randomly distribute players into teams
+            teams = Array.from({ length: numTeams }, () => []);
+            const mustTogetherHandled = [];
+    
+            // Handle must-together pairs first
+            mustTogetherPairs.forEach(pair => {
+                if (!mustTogetherHandled.includes(pair.player1) && !mustTogetherHandled.includes(pair.player2)) {
+                    const teamIndex = getSmallestTeamIndex(teams);
+                    const player1 = selectedPlayers.find(player => player.name === pair.player1);
+                    const player2 = selectedPlayers.find(player => player.name === pair.player2);
+                    if (player1 && player2) {
+                        teams[teamIndex].push(player1, player2);
+                        mustTogetherHandled.push(pair.player1, pair.player2);
+                    }
                 }
-            }
-        });
-
-        // Shuffle and add remaining players while considering cannot-together pairs
-        const remainingPlayers = selectedPlayers.filter(player => !mustTogetherHandled.includes(player.name));
-        remainingPlayers.sort(() => 0.5 - Math.random()); // Shuffle the remaining players
-
-        remainingPlayers.forEach(player => {
-            let teamIndex = getSmallestTeamIndex(teams);
-            const cannotBeTogetherWith = cannotTogetherPairs
-                .filter(pair => pair.player1 === player.name || pair.player2 === player.name)
-                .map(pair => pair.player1 === player.name ? pair.player2 : pair.player1);
-
-            // Find a team where the player can go without violating cannot-together constraints
-            for (let i = 0; i < teams.length; i++) {
-                if (!teams[i].some(teammate => cannotBeTogetherWith.includes(teammate.name))) {
-                    teamIndex = i;
-                    break;
+            });
+    
+            // Shuffle and add remaining players while considering cannot-together pairs
+            const remainingPlayers = selectedPlayers.filter(player => !mustTogetherHandled.includes(player.name));
+            remainingPlayers.sort(() => 0.5 - Math.random()); // Shuffle the remaining players
+    
+            remainingPlayers.forEach(player => {
+                let teamIndex = getSmallestTeamIndex(teams);
+                const cannotBeTogetherWith = cannotTogetherPairs
+                    .filter(pair => pair.player1 === player.name || pair.player2 === player.name)
+                    .map(pair => pair.player1 === player.name ? pair.player2 : pair.player1);
+    
+                // Find a team where the player can go without violating cannot-together constraints
+                for (let i = 0; i < teams.length; i++) {
+                    if (!teams[i].some(teammate => cannotBeTogetherWith.includes(teammate.name))) {
+                        teamIndex = i;
+                        break;
+                    }
                 }
+    
+                teams[teamIndex].push(player);
+            });
+    
+            // Calculate average ranks for teams and check the max difference
+            const teamAverages = teams.map(team => team.reduce((sum, player) => sum + player.rank, 0) / team.length);
+            const maxAvg = Math.max(...teamAverages);
+            const minAvg = Math.min(...teamAverages);
+            const maxDifference = maxAvg - minAvg;
+    
+            if (maxDifference <= threshold) {
+                return teams;
             }
-
-            teams[teamIndex].push(player);
-        });
-
-        // Balance teams based on average rank
-        balanceTeamsByRank(teams);
-
-        return teams;
+    
+            attempts++;
+    
+            // Increase the threshold after every 100 attempts
+            if (attempts % 100 === 0) {
+                threshold += 0.1;
+            }
+        }
+    
+        // If teams couldn't be generated after 1000 attempts, return an error
+        alert("Unable to generate balanced teams after 1000 attempts. Please try again.");
+        return null;
     }
+    
 
     function getSmallestTeamIndex(teams) {
         return teams.reduce((smallestIndex, team, index, array) =>
@@ -258,19 +282,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Display Teams
     function displayTeams(teams) {
         const teamsResult = document.getElementById("teams-result");
         teamsResult.innerHTML = "";
-
+    
         teams.forEach((team, index) => {
             const teamDiv = document.createElement("div");
             teamDiv.innerHTML = `<h3>Team ${index + 1}</h3><ul>`;
+            let totalRank = 0;
+    
             team.forEach(player => {
                 teamDiv.innerHTML += `<li>${player.name} - Rank: ${player.rank}</li>`;
+                totalRank += player.rank;
             });
-            teamDiv.innerHTML += `</ul>`;
+    
+            const averageRank = (totalRank / team.length).toFixed(2);
+            teamDiv.innerHTML += `</ul><p style="color: red;">Average Rank: ${averageRank}</p>`;
             teamsResult.appendChild(teamDiv);
         });
     }
+    
 });
