@@ -1,6 +1,21 @@
 [
-    { "name": "Player 1", "rank": 8 },
-    { "name": "Player 2", "rank": 7 },
-    { "name": "Player 3", "rank": 9 },
-    { "name": "Player 4", "rank": 6 }
+    { "name": "שקד קרבס", "rank": 8 },
+    { "name": "עמית דיגמי", "rank": 7 },
+    { "name": "תומר פייגלר", "rank": 6 },
+    { "name": "שחקן ", "rank": 6 },
+    { "name": "שחקן 1", "rank": 3 },
+    { "name": "שחקן 2", "rank": 5 },
+    { "name": "שחקן 3", "rank": 1 },
+    { "name": "שחקן 4", "rank": 7 },
+    { "name": "שחקן 5", "rank": 3 },
+    { "name": "שחקן 9", "rank": 9 },
+    { "name": "שחקן 7", "rank": 2 },
+    { "name": "שחקן 8", "rank": 5 },
+    { "name": "שחקן 9", "rank": 5 },
+    { "name": "שחקן 10", "rank": 6 },
+    { "name": "שחקן 11", "rank": 6 },
+    { "name": "שחקן 12", "rank": 7 },
+    { "name": "שחקן 13", "rank": 8 },
+    { "name": "שחקן 14", "rank": 4 }
+
 ]
