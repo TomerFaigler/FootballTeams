@@ -444,52 +444,50 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // New Generate Teams Logic
-    function generateTeams(players, numTeams, mustTogetherPairs, cannotTogetherPairs) {
+    function generateTeams(players, numTeams, mustTogetherPairs = [], cannotTogetherPairs = []) {
         let attempts = 0;
         let threshold = 0.5;
         const maxAttempts = 10000;
-
+    
         while (attempts < maxAttempts) {
             // Step 1: Shuffle players and create teams
             const shuffledPlayers = shufflePlayers([...players]);
             let teams = createInitialTeams(shuffledPlayers, numTeams);
-
+    
             // Step 2: Ensure must-together pairs are in the same team
             if (!validateMustTogether(teams, mustTogetherPairs)) {
                 attempts++;
                 continue;
             }
-
+    
             // Step 3: Ensure cannot-together pairs are in different teams
             if (!validateCannotTogether(teams, cannotTogetherPairs)) {
                 attempts++;
                 continue;
             }
-
+    
             // Step 4: Calculate average ranks for teams and check the max difference
             const teamAverages = teams.map(team => calculateAverageRank(team));
             const maxAvg = Math.max(...teamAverages);
             const minAvg = Math.min(...teamAverages);
             const maxDifference = maxAvg - minAvg;
-
+    
             if (maxDifference <= threshold) {
                 return teams; // Valid teams found
             }
-
+    
             attempts++;
-
+    
             // Increase the threshold after every 100 attempts
             if (attempts % 100 === 0) {
                 threshold += 0.1;
             }
         }
-
+    
         // If teams couldn't be generated after maxAttempts
         throw new Error(`Unable to generate balanced teams after ${maxAttempts} attempts.`);
     }
-
-    // Shuffle players array
+    
     function shufflePlayers(players) {
         for (let i = players.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -497,8 +495,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return players;
     }
-
-    // Create initial teams with roughly equal sizes
+    
     function createInitialTeams(players, numTeams) {
         const teams = Array.from({ length: numTeams }, () => []);
         players.forEach((player, index) => {
@@ -506,21 +503,18 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         return teams;
     }
-
-    // Calculate the average rank of a team
+    
     function calculateAverageRank(team) {
         const totalRank = team.reduce((sum, player) => sum + player.rank, 0);
         return totalRank / team.length;
     }
-
-    // Validate must-together pairs
+    
     function validateMustTogether(teams, mustTogetherPairs) {
         return mustTogetherPairs.every(pair => {
             return teams.some(team => team.includes(pair.player1) && team.includes(pair.player2));
         });
     }
-
-    // Validate cannot-together pairs
+    
     function validateCannotTogether(teams, cannotTogetherPairs) {
         return cannotTogetherPairs.every(pair => {
             return teams.every(team => !(team.includes(pair.player1) && team.includes(pair.player2)));
