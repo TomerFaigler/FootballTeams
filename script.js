@@ -324,7 +324,11 @@ document.addEventListener("DOMContentLoaded", function() {
             playersList.appendChild(li);
         });
     }
-
+    function updateSelectedPlayersCount() {
+        const selectedCount = document.querySelectorAll("#players-subset-list input:checked").length;
+        document.getElementById("selected-players-count").textContent = `Selected players: ${selectedCount}`;
+    }
+    
     // Display Must Together Pairs
 function displayMustTogetherPairs() {
     const mustTogetherList = document.getElementById("must-together-list");
@@ -415,11 +419,15 @@ document.getElementById("add-pair-cannot-btn").addEventListener("click", functio
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.value = player.name;
+            checkbox.addEventListener("change", updateSelectedPlayersCount); // Update count when selection changes
             li.appendChild(checkbox);
             li.appendChild(document.createTextNode(`${player.name} - Rank: ${player.rank}`));
             playersSubsetList.appendChild(li);
         });
+        
+        updateSelectedPlayersCount(); // Initial count update
     }
+    
 
     // Generate Teams
     document.getElementById("generate-teams-btn").addEventListener("click", function() {
