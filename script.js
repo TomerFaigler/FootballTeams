@@ -265,7 +265,7 @@ document.getElementById("add-pair-cannot-btn").addEventListener("click", functio
     function displayTeams(teams) {
         const teamsResult = document.getElementById("teams-result");
         teamsResult.innerHTML = "";
-
+        let allTeamsText = "";
         teams.forEach((team, index) => {
             const teamDiv = document.createElement("div");
             teamDiv.innerHTML = `<h3>Team ${index + 1}</h3><ul>`;
