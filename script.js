@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let players = [];
 
     // Fetch players from static JSON file
-    fetch('players_1.json')
+    fetch('players_1.json'+ new Date().getTime())
         .then(response => response.json())
         .then(data => {
             players = data;
@@ -266,9 +266,10 @@ document.getElementById("add-pair-cannot-btn").addEventListener("click", functio
         const teamsResult = document.getElementById("teams-result");
         teamsResult.innerHTML = "";
         let allTeamsText = "";
+        let teamColor = ["אפורים", "צהובים", "כתומים"]
         teams.forEach((team, index) => {
             const teamDiv = document.createElement("div");
-            teamDiv.innerHTML = `<h3>Team ${index + 1}</h3><ul>`;
+            teamDiv.innerHTML = `<h3>${teamColor[index]}</h3><ul>`;
             let totalRank = 0;
 
             team.forEach(player => {
@@ -280,10 +281,10 @@ document.getElementById("add-pair-cannot-btn").addEventListener("click", functio
             teamDiv.innerHTML += `</ul><p style="color: red;">Average Rank: ${averageRank}</p>`;
             teamsResult.appendChild(teamDiv);
 
-            allTeamsText += `Team ${index + 1}:\n` + team.map(player => player.name).join("\n") + "\n\n";
+            allTeamsText += `${teamColor[index]}:\n` + team.map(player => player.name).join("\n") + "\n\n";
         });
         const copyAllButton = document.createElement("button");
-        copyAllButton.innerHTML = `<span style="font-size: 14px;">&#x2398;</span> Copy All Teams`;
+        copyAllButton.innerHTML = `<span style="font-size: 14px;">&#x2398;</span> העתק קבוצות`;
         copyAllButton.style.marginTop = "20px";
         copyAllButton.style.padding = "10px 20px";
         copyAllButton.style.backgroundColor = "#0073e6";
