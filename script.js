@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let players = [];
 
     // Fetch players from static JSON file
-    fetch('players_1.json'+ new Date().getTime())
+    fetch('players_1.json?t='+ new Date().getTime())
         .then(response => response.json())
         .then(data => {
             players = data;
