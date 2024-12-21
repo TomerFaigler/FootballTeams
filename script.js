@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
         mustTogether: document.getElementById("must-together-section"),
         cannotTogether: document.getElementById("cannot-together-section"),
         teams: document.getElementById("teams-section"),
-        matches: document.getElementById("matches-section")
     };
 
     const navLinks = {
@@ -12,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function() {
         mustTogether: document.getElementById("nav-must-together"),
         cannotTogether: document.getElementById("nav-cannot-together"),
         teams: document.getElementById("nav-teams"),
-        matches: document.getElementById("nav-matches")
     };
 
     // Initialize data from localStorage or set default values
